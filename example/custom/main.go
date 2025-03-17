@@ -8,7 +8,9 @@ import (
 	"strings"
 	"time"
 
-	_ "github.com/yourusername/monibuca/plugin/snapshot" // Import your custom snapshot plugin
+	// Import your custom snapshot plugin
+	_ "github.com/Vitan-Vmukti/monibuca_server/plugin/snapshot"
+
 	"m7s.live/v5"
 	_ "m7s.live/v5/plugin/debug"
 	_ "m7s.live/v5/plugin/flv"
@@ -30,6 +32,7 @@ import (
 func main() {
 	conf := flag.String("c", "config.yaml", "config file")
 	flag.Parse()
+
 	mp4.CustomFileName = func(job *m7s.RecordJob) string {
 		if job.RecConf.Fragment == 0 {
 			return job.RecConf.FilePath + ".mp4"
@@ -38,5 +41,7 @@ func main() {
 		lastPart := ss[len(ss)-1]
 		return filepath.Join(job.RecConf.FilePath, fmt.Sprintf("%s_%s%s", lastPart, time.Now().Local().Format("2006-01-02-15-04-05"), ".mp4"))
 	}
+
+	// Start the Monibuca server
 	m7s.Run(context.Background(), *conf)
 }
