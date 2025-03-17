@@ -4,6 +4,11 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"path/filepath"
+	"strings"
+	"time"
+
+	_ "github.com/yourusername/monibuca/plugin/snapshot" // Import your custom snapshot plugin
 	"m7s.live/v5"
 	_ "m7s.live/v5/plugin/debug"
 	_ "m7s.live/v5/plugin/flv"
@@ -20,9 +25,6 @@ import (
 	_ "m7s.live/v5/plugin/stress"
 	_ "m7s.live/v5/plugin/transcode"
 	_ "m7s.live/v5/plugin/webrtc"
-	"path/filepath"
-	"strings"
-	"time"
 )
 
 func main() {
@@ -36,6 +38,5 @@ func main() {
 		lastPart := ss[len(ss)-1]
 		return filepath.Join(job.RecConf.FilePath, fmt.Sprintf("%s_%s%s", lastPart, time.Now().Local().Format("2006-01-02-15-04-05"), ".mp4"))
 	}
-	// ctx, _ := context.WithDeadline(context.Background(), time.Now().Add(time.Second*100))
 	m7s.Run(context.Background(), *conf)
 }
